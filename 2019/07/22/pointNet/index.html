@@ -94,13 +94,13 @@
 
 
 
-<meta name="description" content="版权声明：来源请注明出处 https://blog.csdn.net/qq_40196164/article/details/85834382 PointNet：用于3D分类和分割的点集的深度学习摘要&amp;emsp;点云是几何数据结构的重要类型。由于其格式不规则，大多数研究人员将这些数据转换为规则的三维体素网格或图像集合。但是，这会导致数据不必要的庞大并导致问题。在本文中，我们设计了一种直接消耗点云的">
+<meta name="description" content="版权声明：来源请注明出处 https://blog.csdn.net/qq_40196164/article/details/85834382 PointNet：用于3D分类和分割的点集的深度学习 摘要&amp;emsp;点云是几何数据结构的重要类型。由于其格式不规则，大多数研究人员将这些数据转换为规则的三维体素网格或图像集合。但是，这会导致数据不必要的庞大并导致问题。在本文中，我们设计了一种直接消耗点云">
 <meta name="keywords" content="PointNet++,点云">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PointNet翻译">
 <meta property="og:url" content="http://jelen-d.com/2019/07/22/pointNet/index.html">
 <meta property="og:site_name" content="Jelen&#39;s blog">
-<meta property="og:description" content="版权声明：来源请注明出处 https://blog.csdn.net/qq_40196164/article/details/85834382 PointNet：用于3D分类和分割的点集的深度学习摘要&amp;emsp;点云是几何数据结构的重要类型。由于其格式不规则，大多数研究人员将这些数据转换为规则的三维体素网格或图像集合。但是，这会导致数据不必要的庞大并导致问题。在本文中，我们设计了一种直接消耗点云的">
+<meta property="og:description" content="版权声明：来源请注明出处 https://blog.csdn.net/qq_40196164/article/details/85834382 PointNet：用于3D分类和分割的点集的深度学习 摘要&amp;emsp;点云是几何数据结构的重要类型。由于其格式不规则，大多数研究人员将这些数据转换为规则的三维体素网格或图像集合。但是，这会导致数据不必要的庞大并导致问题。在本文中，我们设计了一种直接消耗点云">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190105092938361.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwMTk2MTY0,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://private.codecogs.com/gif.latex?%5Cleft%20%28%20x%2Cy%2Cz%20%5Cright%20%29">
@@ -191,10 +191,10 @@
 <meta property="og:image" content="https://private.codecogs.com/gif.latex?N_S">
 <meta property="og:image" content="https://private.codecogs.com/gif.latex?%28h_%7B1%7D%28p%29%2Ch_%7B2%7D%28p%29%2C...%2Ch_%7BK%7D%28p%29%29">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190107094842909.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwMTk2MTY0,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2019-08-15T16:36:05.588Z">
+<meta property="og:updated_time" content="2019-08-15T17:26:49.550Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PointNet翻译">
-<meta name="twitter:description" content="版权声明：来源请注明出处 https://blog.csdn.net/qq_40196164/article/details/85834382 PointNet：用于3D分类和分割的点集的深度学习摘要&amp;emsp;点云是几何数据结构的重要类型。由于其格式不规则，大多数研究人员将这些数据转换为规则的三维体素网格或图像集合。但是，这会导致数据不必要的庞大并导致问题。在本文中，我们设计了一种直接消耗点云的">
+<meta name="twitter:description" content="版权声明：来源请注明出处 https://blog.csdn.net/qq_40196164/article/details/85834382 PointNet：用于3D分类和分割的点集的深度学习 摘要&amp;emsp;点云是几何数据结构的重要类型。由于其格式不规则，大多数研究人员将这些数据转换为规则的三维体素网格或图像集合。但是，这会导致数据不必要的庞大并导致问题。在本文中，我们设计了一种直接消耗点云">
 <meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190105092938361.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwMTk2MTY0,size_16,color_FFFFFF,t_70">
 
 
@@ -445,6 +445,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PointNet/" itemprop="url" rel="index">
+                    <span itemprop="name">PointNet++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -473,7 +495,8 @@
 
       
         <p>版权声明：来源请注明出处 <a href="https://blog.csdn.net/qq_40196164/article/details/85834382" target="_blank" rel="noopener">https://blog.csdn.net/qq_40196164/article/details/85834382</a></p>
-<h1 id="PointNet：用于3D分类和分割的点集的深度学习"><a href="#PointNet：用于3D分类和分割的点集的深度学习" class="headerlink" title="PointNet：用于3D分类和分割的点集的深度学习"></a>PointNet：用于3D分类和分割的点集的深度学习</h1><p><strong>摘要</strong>&emsp;点云是几何数据结构的重要类型。由于其格式不规则，大多数研究人员将这些数据转换为规则的三维体素网格或图像集合。但是，这会导致数据不必要的庞大并导致问题。在本文中，我们设计了一种直接消耗点云的新型神经网络，它很好地尊重了输入点中的点的置换不变性。我们的网络，名为PointNet，提供了从对象分类，零件分割到场景语义分析等应用的统一架构。虽然简单，但PointNet非常高效和高效。从经验上讲，它表现出强劲的表现，甚至比现有技术更好。理论上，我们提供分析以了解网络已经学到了什么，以及为什么网络在输入扰动方面是强健的。</p>
+<p><strong>PointNet：用于3D分类和分割的点集的深度学习</strong></p>
+<p><strong>摘要</strong>&emsp;点云是几何数据结构的重要类型。由于其格式不规则，大多数研究人员将这些数据转换为规则的三维体素网格或图像集合。但是，这会导致数据不必要的庞大并导致问题。在本文中，我们设计了一种直接消耗点云的新型神经网络，它很好地尊重了输入点中的点的置换不变性。我们的网络，名为PointNet，提供了从对象分类，零件分割到场景语义分析等应用的统一架构。虽然简单，但PointNet非常高效和高效。从经验上讲，它表现出强劲的表现，甚至比现有技术更好。理论上，我们提供分析以了解网络已经学到了什么，以及为什么网络在输入扰动方面是强健的。</p>
 <a id="more"></a>
 
 <h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><p>在本文中，我们探讨了能够推理三维几何数据（如点云或网格）的深度学习架构。 典型的卷积架构需要高度规则的输入数据格式，如图像网格或3D体素，以便执行权重共享和其他内核优化。 由于点云或网格不是常规格式，因此大多数研究人员通常会在将这些数据馈送到深层网络体系结构之前将这些数据转换为常规3D体素网格或图像集合（例如视图）。 然而，这种数据表示转换会导致产生的数据不必要的庞大，同时也会引入量化伪像，这些伪像会遮掩数据的<strong>自然不变性</strong>。</p>
@@ -736,6 +759,15 @@
           
 
           
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
           
             
@@ -777,7 +809,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PointNet：用于3D分类和分割的点集的深度学习"><span class="nav-number">1.</span> <span class="nav-text">PointNet：用于3D分类和分割的点集的深度学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-介绍"><span class="nav-number">1.1.</span> <span class="nav-text">1. 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-相关工作"><span class="nav-number">1.2.</span> <span class="nav-text">2. 相关工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-问题陈述"><span class="nav-number">1.3.</span> <span class="nav-text">3.问题陈述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-点集上的深度学习"><span class="nav-number">1.4.</span> <span class="nav-text">4.点集上的深度学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-中点集的性质"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1 中点集的性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-Pointnet-结构"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2 Pointnet 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-理论分析"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.3 理论分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-实验"><span class="nav-number">1.5.</span> <span class="nav-text">5. 实验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-应用"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-结构设计分析"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2 结构设计分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-可视化Pointnet"><span class="nav-number">1.5.3.</span> <span class="nav-text">5.3 可视化Pointnet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-时间和空间复杂度分析"><span class="nav-number">1.5.4.</span> <span class="nav-text">5.4 时间和空间复杂度分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-结论"><span class="nav-number">1.6.</span> <span class="nav-text">6. 结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">1.7.</span> <span class="nav-text">References</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-介绍"><span class="nav-number">1.</span> <span class="nav-text">1. 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-相关工作"><span class="nav-number">2.</span> <span class="nav-text">2. 相关工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-问题陈述"><span class="nav-number">3.</span> <span class="nav-text">3.问题陈述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-点集上的深度学习"><span class="nav-number">4.</span> <span class="nav-text">4.点集上的深度学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-中点集的性质"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 中点集的性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-Pointnet-结构"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 Pointnet 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-理论分析"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 理论分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-实验"><span class="nav-number">5.</span> <span class="nav-text">5. 实验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-应用"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-结构设计分析"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 结构设计分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-可视化Pointnet"><span class="nav-number">5.3.</span> <span class="nav-text">5.3 可视化Pointnet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-时间和空间复杂度分析"><span class="nav-number">5.4.</span> <span class="nav-text">5.4 时间和空间复杂度分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-结论"><span class="nav-number">6.</span> <span class="nav-text">6. 结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">7.</span> <span class="nav-text">References</span></a></li></ol></div>
             
 
           </div>
