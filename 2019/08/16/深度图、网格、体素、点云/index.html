@@ -102,16 +102,16 @@
 <meta property="og:site_name" content="Jelen&#39;s blog">
 <meta property="og:description" content="https://www.cnblogs.com/lainey/p/8547056.html  ##深度图 Depth map 深度图是一张2D图片，每个像素都记录了从视点到遮挡物表面（遮挡物就是阴影生成物体）的距离，这些像素对应的顶点对于观察者来说是“可见的”。 Depth map中像素点记录的深度值为lenth1；然后从视点出现，计算物体顶点v到视点的距离，记为lenth2；比较二者大小，来确">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://jelen-d.com/2019/08/16/深度图、网格、体素、点云/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E3%80%81%E7%BD%91%E6%A0%BC%E3%80%81%E4%BD%93%E7%B4%A0%E3%80%81%E7%82%B9%E4%BA%91/%E6%B7%B1%E5%BA%A6%E5%9B%BE.png">
+<meta property="og:image" content="http://jelen-d.com/2019/08/16/深度图、网格、体素、点云/%E6%B7%B1%E5%BA%A6%E5%9B%BE.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/深度图、网格、体素、点云/!%5B%5D(%E6%B7%B1%E5%BA%A6%E5%9B%BE%E3%80%81%E7%BD%91%E6%A0%BC%E3%80%81%E4%BD%93%E7%B4%A0%E3%80%81%E7%82%B9%E4%BA%91/%E6%B5%B7%E8%B1%9A.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/深度图、网格、体素、点云/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E3%80%81%E7%BD%91%E6%A0%BC%E3%80%81%E4%BD%93%E7%B4%A0%E3%80%81%E7%82%B9%E4%BA%91/iphoneX.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/深度图、网格、体素、点云/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E3%80%81%E7%BD%91%E6%A0%BC%E3%80%81%E4%BD%93%E7%B4%A0%E3%80%81%E7%82%B9%E4%BA%91/%E4%BA%BA%E8%84%B8%E7%BD%91%E6%A0%BC.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/深度图、网格、体素、点云/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E3%80%81%E7%BD%91%E6%A0%BC%E3%80%81%E4%BD%93%E7%B4%A0%E3%80%81%E7%82%B9%E4%BA%91/%E6%B1%A0%E5%8C%96.png">
-<meta property="og:updated_time" content="2019-08-16T09:04:45.356Z">
+<meta property="og:updated_time" content="2019-08-16T09:09:13.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度图、网格、体素、点云">
 <meta name="twitter:description" content="https://www.cnblogs.com/lainey/p/8547056.html  ##深度图 Depth map 深度图是一张2D图片，每个像素都记录了从视点到遮挡物表面（遮挡物就是阴影生成物体）的距离，这些像素对应的顶点对于观察者来说是“可见的”。 Depth map中像素点记录的深度值为lenth1；然后从视点出现，计算物体顶点v到视点的距离，记为lenth2；比较二者大小，来确">
-<meta name="twitter:image" content="http://jelen-d.com/2019/08/16/深度图、网格、体素、点云/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E3%80%81%E7%BD%91%E6%A0%BC%E3%80%81%E4%BD%93%E7%B4%A0%E3%80%81%E7%82%B9%E4%BA%91/%E6%B7%B1%E5%BA%A6%E5%9B%BE.png">
+<meta name="twitter:image" content="http://jelen-d.com/2019/08/16/深度图、网格、体素、点云/%E6%B7%B1%E5%BA%A6%E5%9B%BE.png">
 
 
 
@@ -392,7 +392,7 @@
 <p><a href="https://www.cnblogs.com/lainey/p/8547056.html" target="_blank" rel="noopener">https://www.cnblogs.com/lainey/p/8547056.html</a></p>
 </blockquote>
 <p>##深度图</p>
-<p><img src="%E6%B7%B1%E5%BA%A6%E5%9B%BE%E3%80%81%E7%BD%91%E6%A0%BC%E3%80%81%E4%BD%93%E7%B4%A0%E3%80%81%E7%82%B9%E4%BA%91/%E6%B7%B1%E5%BA%A6%E5%9B%BE.png" alt><br>Depth map 深度图是一张<strong>2D</strong>图片，每个像素都记录了从视点到遮挡物表面（遮挡物就是阴影生成物体）的距离，这些像素对应的顶点对于观察者来说是“可见的”。</p>
+<p><img src="%E6%B7%B1%E5%BA%A6%E5%9B%BE.png" alt><br>Depth map 深度图是一张<strong>2D</strong>图片，每个像素都记录了从视点到遮挡物表面（遮挡物就是阴影生成物体）的距离，这些像素对应的顶点对于观察者来说是“可见的”。</p>
 <p>Depth map中像素点记录的深度值为lenth1；然后从视点出现，计算物体顶点v到视点的距离，记为lenth2；比较二者大小，来确定“v”是否被遮挡。该术语的同义词有depth buffer，Z-buffer，Z-buffering和Z-depth。这里的“Z”是相对于相机（即视点）视图中心轴而言的，也就是相机的z轴线，而不是场景的绝对坐标中的z轴线。</p>
 <p>用途</p>
 <ul>
