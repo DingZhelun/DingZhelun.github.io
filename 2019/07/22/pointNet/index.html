@@ -191,7 +191,7 @@
 <meta property="og:image" content="https://private.codecogs.com/gif.latex?N_S">
 <meta property="og:image" content="https://private.codecogs.com/gif.latex?%28h_%7B1%7D%28p%29%2Ch_%7B2%7D%28p%29%2C...%2Ch_%7BK%7D%28p%29%29">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190107094842909.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwMTk2MTY0,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2019-08-15T17:26:49.550Z">
+<meta property="og:updated_time" content="2019-08-16T03:42:30.717Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PointNet翻译">
 <meta name="twitter:description" content="版权声明：来源请注明出处 https://blog.csdn.net/qq_40196164/article/details/85834382 PointNet：用于3D分类和分割的点集的深度学习 摘要&amp;emsp;点云是几何数据结构的重要类型。由于其格式不规则，大多数研究人员将这些数据转换为规则的三维体素网格或图像集合。但是，这会导致数据不必要的庞大并导致问题。在本文中，我们设计了一种直接消耗点云">
@@ -311,16 +311,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
-            
-            关于
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
@@ -337,6 +327,16 @@
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
           </a>
         </li>
       
@@ -707,6 +707,8 @@
           
   <div class="comments" id="comments">
     
+ <div id="gitalk-container"></div>
+    
   </div>
 
 
@@ -786,6 +788,30 @@
 
         <div class="links-of-author motion-element">
           
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/7243277533" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      微博
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/DingZhelun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+          
         </div>
 
         
@@ -796,7 +822,7 @@
 
         
 
-
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=474739593&auto=1&height=66"></iframe>
       </section>
 
       
@@ -965,6 +991,22 @@
 
 
 
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'e4a9425fec48ec422d2d',
+          clientSecret: 'a94a3247d0e2df33ba4e2d9a62dc40aafcab89a0',
+          repo: 'dingzhelun.github.io',
+          owner: 'DingZhelun',
+          admin: ['1026130346@qq.com'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
 
 
   
