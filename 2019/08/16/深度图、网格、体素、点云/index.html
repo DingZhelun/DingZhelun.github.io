@@ -107,7 +107,7 @@
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/深度图、网格、体素、点云/iphoneX.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/深度图、网格、体素、点云/%E4%BA%BA%E8%84%B8%E7%BD%91%E6%A0%BC.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/深度图、网格、体素、点云/%E6%B1%A0%E5%8C%96.png">
-<meta property="og:updated_time" content="2019-08-16T09:15:56.080Z">
+<meta property="og:updated_time" content="2019-08-16T09:20:45.764Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度图、网格、体素、点云">
 <meta name="twitter:description" content="https://www.cnblogs.com/lainey/p/8547056.html">
@@ -392,9 +392,7 @@
 <p><a href="https://www.cnblogs.com/lainey/p/8547056.html" target="_blank" rel="noopener">https://www.cnblogs.com/lainey/p/8547056.html</a></p>
 </blockquote>
 <a id="more"></a>
-
-<p>#深度图</p>
-<p><img src="%E6%B7%B1%E5%BA%A6%E5%9B%BE.png" alt><br>Depth map 深度图是一张<strong>2D</strong>图片，每个像素都记录了从视点到遮挡物表面（遮挡物就是阴影生成物体）的距离，这些像素对应的顶点对于观察者来说是“可见的”。</p>
+<h2 id="深度图"><a href="#深度图" class="headerlink" title="深度图"></a>深度图</h2><p><img src="%E6%B7%B1%E5%BA%A6%E5%9B%BE.png" alt><br>Depth map 深度图是一张<strong>2D</strong>图片，每个像素都记录了从视点到遮挡物表面（遮挡物就是阴影生成物体）的距离，这些像素对应的顶点对于观察者来说是“可见的”。</p>
 <p>Depth map中像素点记录的深度值为lenth1；然后从视点出现，计算物体顶点v到视点的距离，记为lenth2；比较二者大小，来确定“v”是否被遮挡。该术语的同义词有depth buffer，Z-buffer，Z-buffering和Z-depth。这里的“Z”是相对于相机（即视点）视图中心轴而言的，也就是相机的z轴线，而不是场景的绝对坐标中的z轴线。</p>
 <p>用途</p>
 <ul>
@@ -402,9 +400,9 @@
 <li>模拟场景表面的深度域（depth of field (DOF)）</li>
 <li>可用于高效的变形体碰撞检测</li>
 </ul>
-<p>#体素（立体像素）<br><strong>体素</strong>或<strong>立体像素</strong>（voxel），是体积像素（volume pixel）的简称。概念上类似二维空间的最小单位——像素，像素用在二维电脑图像的视频数据上。体积像素一如其名，是数字数据于三维空间分区上的最小单位，应用于三维成像、科学数据与医学视频等领域。有些真正的三维显示器运用体素来描述他们的分辨率，举例说：可以显示512×512×512体素的显示器。</p>
+<h2 id="体素（立体像素）"><a href="#体素（立体像素）" class="headerlink" title="体素（立体像素）"></a>体素（立体像素）</h2><p><strong>体素</strong>或<strong>立体像素</strong>（voxel），是体积像素（volume pixel）的简称。概念上类似二维空间的最小单位——像素，像素用在二维电脑图像的视频数据上。体积像素一如其名，是数字数据于三维空间分区上的最小单位，应用于三维成像、科学数据与医学视频等领域。有些真正的三维显示器运用体素来描述他们的分辨率，举例说：可以显示512×512×512体素的显示器。</p>
 <p>如同像素，体素本身<strong>并不含有</strong>空间中位置的数据（即他们的坐标），然而却可以从他们相对于其他体素的位置推敲，意即他们在构成单一张体积视频的数据结构中的位置。</p>
-<p>#网格<br><strong>多边形网络</strong>（Polygon mesh）是三维计算机图形学中表示多面体形状的顶点与多边形的集合,它也叫作非结构网格。</p>
+<h2 id="网格"><a href="#网格" class="headerlink" title="网格"></a>网格</h2><p><strong>多边形网络</strong>（Polygon mesh）是三维计算机图形学中表示多面体形状的顶点与多边形的集合,它也叫作非结构网格。</p>
 <p>这些网格通常由三角形、四边形或者其他的简单凸多边形组成，这样可以简化渲染过程。但是，网格也可以包括带有空洞的普通多边形组成的物体。</p>
 <p>非结构网格内部表示的例子有：</p>
 <ul>
@@ -413,8 +411,7 @@
 <li>翼边数据结构</li>
 </ul>
 <p>根据应用程序的不同所选择的数据结构也有所不同：三角形的处理要比普通多边形的处理更加简单，尤其是在计算几何中更是这样。对于优化的算法，可能需要快速访问边线或者相邻表面这样的拓扑信息，这样就需要如翼边表示这样更加复杂的结构。<br><img src="%E6%B5%B7%E8%B1%9A.png" alt></p>
-<p>#点云（维基百科）</p>
-<p><strong>点云</strong>（point cloud）是指通过3D扫描器所取得至资料形式。</p>
+<h2 id="点云（维基百科）"><a href="#点云（维基百科）" class="headerlink" title="点云（维基百科）"></a>点云（维基百科）</h2><p><strong>点云</strong>（point cloud）是指通过3D扫描器所取得至资料形式。</p>
 <p>扫描资料以点的型式记录，每一个点包含有三维座标，有些可能含有色彩资讯（R,G,B）或物体反射面强度。</p>
 <p>点云数据除了具有几何位置以外，还有强度（Intensity）信息，强度信息的获取是激光扫描仪接受装置采集到的回波强度，此强度信息与目标的表面材质、粗糙度、入射角方向，以及仪器的发射能量，激光波长有关。点云也是逆向工程中通过仪器测量外表的点数据集合。</p>
 <p>在电脑动画领域，皮克斯的玩具总动员3使用了点云技术。</p>
@@ -441,8 +438,7 @@
 <li>由于结构光的特性，每一帧数据都能重建出完整的 3D 模型，速度也非常快，才能适应像手机解锁这样的应用</li>
 <li>结构光方案因为自带光源，所以天黑的时候也能用</li>
 </ul>
-<p>#最大池化 max pooling</p>
-<blockquote>
+<h2 id="最大池化-max-pooling"><a href="#最大池化-max-pooling" class="headerlink" title="最大池化 max pooling"></a>最大池化 max pooling</h2><blockquote>
 <p><a href="https://blog.csdn.net/u012193416/article/details/79432668" target="_blank" rel="noopener">https://blog.csdn.net/u012193416/article/details/79432668</a></p>
 </blockquote>
 <p>池化操作时在卷积神经网络中经常采用过的一个基本操作，一般在卷积层后面都会接一个池化操作，但是近些年比较主流的ImageNet上的分类算法模型都是使用的max-pooling，很少使用average-pooling，这对我们平时设计模型时确实有比较重要的参考作用，但是原因在哪里呢？</p>
@@ -484,8 +480,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/15/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2019/07/22/pointNet/" rel="next" title="PointNet翻译">
+                <i class="fa fa-chevron-left"></i> PointNet翻译
               </a>
             
           </div>
@@ -547,8 +543,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Jelen Ding">
           <p class="site-author-name" itemprop="name">Jelen Ding</p>
@@ -561,7 +566,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -632,6 +637,22 @@
       <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=474739593&auto=1&height=66"></iframe>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#深度图"><span class="nav-number">1.</span> <span class="nav-text">深度图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#体素（立体像素）"><span class="nav-number">2.</span> <span class="nav-text">体素（立体像素）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网格"><span class="nav-number">3.</span> <span class="nav-text">网格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点云（维基百科）"><span class="nav-number">4.</span> <span class="nav-text">点云（维基百科）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最大池化-max-pooling"><span class="nav-number">5.</span> <span class="nav-text">最大池化 max pooling</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
