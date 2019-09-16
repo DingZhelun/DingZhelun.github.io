@@ -502,22 +502,14 @@
 
       
         
-          
-            <h2 id="一、三维深度学习简介"><a href="#一、三维深度学习简介" class="headerlink" title="一、三维深度学习简介"></a>一、三维深度学习简介</h2><ol>
-<li>多视角（multi-view）：通过多视角二维图片组合三维物体，此方法将传统CNN应用于多张二维视角的图片，特征被view pooling procedure聚合起来形成三维物体</li>
-<li>体素（volumetric）：通过将物体表现为空间中的体素进行类似于二维的三维卷积（例如，卷积核大小为5*5*5），是规律化的并且易于类比二维的，但同时因为多了一个维度出来，时间和空间复杂度都非常高，目前已经不是主流的方法了</li>
-<li>点云（point clouds）：直接将三维点云抛入网络进行训练，数据量小。主要任务有分类、分割以及大场景下的语义分割</li>
-<li>非欧式（manifold graph）：在流形或图的结构上进行卷积，三维点云可以表现为mesh结构，可以通过点对之间临接关系表现为图的结构。流形表达比较抽象，用到拉普拉斯特征什么的<br><img src="三维深度学习简介.png" alt></li>
-</ol>
-<h2 id="二、点云存在的问题"><a href="#二、点云存在的问题" class="headerlink" title="二、点云存在的问题"></a>二、点云存在的问题</h2><ol>
-<li>无序性：点云本质上是一长串店（n*3矩阵，其中n是点数）。在几何上，点的顺序不影响它在空间中对整体形状的表示，例如，相同的点云可以由两个完全不同的矩阵表示。如下图左边所示： <img src="无序性左.png" alt> <img src="无序性右.png" alt><blockquote>
-<p>我们希望得到的效果图如下图右边：N代表点云个数，D代表每个点的特征维度，不论点云顺序怎样，希望得到相同的特征图去结果</p>
-</blockquote>
-</li>
-<li></li>
-</ol>
-
-          
+          <h2 id="一、三维深度学习简介"><a href="#一、三维深度学习简介" class="headerlink" title="一、三维深度学习简介"></a>一、三维深度学习简介</h2>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/08/16/PointNet理解/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
