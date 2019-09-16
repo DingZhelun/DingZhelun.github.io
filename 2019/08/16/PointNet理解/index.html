@@ -107,12 +107,12 @@
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/无序性右.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/pointnet网络结构.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/无序性.png">
-<meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/网络结构">
+<meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/网络结构.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/代码1.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/代码2.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/代码3.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/代码4.png">
-<meta property="og:updated_time" content="2019-09-16T03:24:11.407Z">
+<meta property="og:updated_time" content="2019-09-16T03:26:05.380Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PointNet理解">
 <meta name="twitter:description" content="一、三维深度学习简介 多视角（multi-view）：通过多视角二维图片组合三维物体，此方法将传统CNN应用于多张二维视角的图片，特征被view pooling procedure聚合起来形成三维物体 体素（volumetric）：通过将物体表现为空间中的体素进行类似于二维的三维卷积（例如，卷积核大小为5*5*5），是规律化的并且易于类比二维的，但同时因为多了一个维度出来，时间和空间复杂度都非常">
@@ -412,7 +412,7 @@
 <li>空间变换网络（STN）解决旋转问题：三维的STN可以通过学习点云本身的位姿信息学习到一个最有利于网络进行分类或分割的D*D旋转矩阵（D代表特征维度，pointnet中D采用3和64）。至于其中的原理，我的理解是，通过控制最后的loss来对变换矩阵进行调整，pointnet并不关心最后真正做了什么变换，只要有利于最后的结果都可以。pointnet采用了两次STN，第一次input transform是对空间中的点云进行调整，直观上理解是旋转出一个更有利于分类或分割的<font color="red">角度</font>，比如，把物体转到正面；第二次feature transform是对提取出的64维特征进行对齐，即在<font color="red">特征层面</font>对点云进行变换</li>
 <li>maxpooling解决无序性问题：网络对每个点进行了一定程度的特征提取之后，maxpooling可以对点云的整体提取出global feature</li>
 </ol>
-<p>再来看网络结构：<br><img src="网络结构" alt="pointnet网络结构"></p>
+<p>再来看网络结构：<br><img src="网络结构.png" alt="pointnet网络结构"></p>
 <p>其中mlp是通过共享权重的卷积实现，第一层卷积核大小是1<em>3（因为每个点的维度是xyz），之后的每一层卷积核大小都是1\</em>1。即特征提取层知识把每个点连接起来而已。经过两个STN和两个mlp之后，对每个点提取1024维特征，经过maxpooling变成1*1024的全局特征。再经过一个mlp(代码中运用全连接)得到k个score。分类网络最后接的loss是softmax</p>
 <h2 id="四、pointnet代码详解"><a href="#四、pointnet代码详解" class="headerlink" title="四、pointnet代码详解"></a>四、pointnet代码详解</h2><p>重点已经框出</p>
 <p>网络模型部分</p>
