@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Pointnet,">
 
 
 
@@ -94,13 +94,21 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Jelen&#39;s blog">
-<meta property="og:url" content="http://jelen-d.com/tags/pip/index.html">
+<meta name="description" content="https://blog.csdn.net/sinat_37011812/article/details/81945050">
+<meta name="keywords" content="Pointnet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pointnet++理解">
+<meta property="og:url" content="http://jelen-d.com/2019/09/17/pointnet-理解/index.html">
 <meta property="og:site_name" content="Jelen&#39;s blog">
+<meta property="og:description" content="https://blog.csdn.net/sinat_37011812/article/details/81945050">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://jelen-d.com/2019/09/17/pointnet-理解/实现细节.png">
+<meta property="og:image" content="http://jelen-d.com/2019/09/17/pointnet-理解/grouping.png">
+<meta property="og:updated_time" content="2019-09-17T07:18:34.105Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jelen&#39;s blog">
+<meta name="twitter:title" content="Pointnet++理解">
+<meta name="twitter:description" content="https://blog.csdn.net/sinat_37011812/article/details/81945050">
+<meta name="twitter:image" content="http://jelen-d.com/2019/09/17/pointnet-理解/实现细节.png">
 
 
 
@@ -129,13 +137,13 @@
 
 
 
-  <link rel="canonical" href="http://jelen-d.com/tags/pip/">
+  <link rel="canonical" href="http://jelen-d.com/2019/09/17/pointnet-理解/">
 
 
 
 
 
-  <title>标签: pip | Jelen's blog</title>
+  <title>Pointnet++理解 | Jelen's blog</title>
   
 
 
@@ -160,7 +168,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -296,52 +304,171 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>pip<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jelen-d.com/2019/09/17/pointnet-理解/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jelen Ding">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jelen's blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2019/09/14/pip清华镜像/" itemprop="url">
-              
-                <span itemprop="name">linux命令</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">Pointnet++理解</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-09-14T23:46:07+08:00" content="2019-09-14">
-          09-14
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-17T14:40:41+08:00">
+                2019-09-17
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><a href="https://blog.csdn.net/sinat_37011812/article/details/81945050" target="_blank" rel="noopener">https://blog.csdn.net/sinat_37011812/article/details/81945050</a></p>
+</blockquote>
+<a id="more"></a>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>作者在先前的研究中提出Pointnet，此论文是Pointnet的改进版Pointnet++。提出改进的理由是因为Pointnet无法很好地捕捉由度量空间引起的局部结构问题，由此限制了网络对精细场景的识别以及对复杂场景的泛化能力。</p>
+<p>Pointnet的基本思想是对输入点云中的每一个点，学习其对应的空间编码，之后再利用所有点的特征得到一个全局的点云特征，这里欠缺了对局部特征的提取及处理，比如说点云空间中临近点一般都具有相近的特征，同属于一个物体空间中的点的概率很大，就好比二维图像中，同一个物体的像素值都相近一样。</p>
+<p>再者现实场景中的点云往往是书迷不同的，而Pointnet是基于均匀采样的点云进行训练的，导致了其在实际场景点云中的准确率下降。</p>
+<p>Pointnet++就上述提出了改进，解决了两个问题：</p>
+<ol>
+<li>如何对点云进行局部划分</li>
+<li>如何对点云进行局部特征提取</li>
+</ol>
+<p>上述两个问题其实是相互关联的。</p>
+<h2 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h2><p><img src="实现细节.png" alt></p>
+<h3 id="层级点云特征学习"><a href="#层级点云特征学习" class="headerlink" title="层级点云特征学习"></a>层级点云特征学习</h3><p>点集的特征提取由三部分组成，分别为Sampling layer、Grouping layer、Pointnet layer。</p>
+<h4 id="Sampling-layer"><a href="#Sampling-layer" class="headerlink" title="Sampling layer"></a>Sampling layer</h4><p>采样层在输入点云中选择一系列点，由此定义出局部区域的中心。采样算法使用迭代最远点采样方法iterative farthest point sampling（FPS）。<br>FPS：先随机选择一个点，然后再选择离这个点最远的点作为起点，再继续迭代，知道选出需要的个数为止。</p>
+<p>相比随机采样，能更完整的通过区域中心点采样到全局点云</p>
+<h4 id="Grouping-layer"><a href="#Grouping-layer" class="headerlink" title="Grouping layer"></a>Grouping layer</h4><p>目的是要构建局部区域，进而提取特征。思想就是利用临近点，并且论文中使用的是neighborhood ball，而不是KNN，是因为可以保证有一个fixed region scale，主要的指标还是距离distance。</p>
+<h4 id="Pointnet-layer"><a href="#Pointnet-layer" class="headerlink" title="Pointnet layer"></a>Pointnet layer</h4><p>在如何对点云进行局部特征提取的问题上，利用原有的Pointnet就可以很好的提取点云的特征，由此在Pointnet++中，原先的Pointnet网络就成为了Pointnet++网络中的子网络，层级迭代提取特征。</p>
+<h3 id="点云密度不均匀时的鲁棒特征学习"><a href="#点云密度不均匀时的鲁棒特征学习" class="headerlink" title="点云密度不均匀时的鲁棒特征学习"></a>点云密度不均匀时的鲁棒特征学习</h3><p>这里作者解决空间中点云的密度不均匀对特征学习带来的挑战，提出了两种grouping的方法，即如何提取不同尺度的局部patterns并按照局部点的密度去组合它们。称为密度自适应层<br><img src="grouping.png" alt></p>
+<h4 id="Multi-scale-Grouping"><a href="#Multi-scale-Grouping" class="headerlink" title="Multi-scale Grouping"></a>Multi-scale Grouping</h4><p>简单而有效的方式，直接对不同密度的点云特征（通过Pointnet提取后的）进行组合</p>
+<p>不同密度的点云时通过对输入点云进行不同概率的dropout得到的</p>
+<p>问题是计算量比较大</p>
+<h4 id="Multi-resolution-Grouping"><a href="#Multi-resolution-Grouping" class="headerlink" title="Multi-resolution Grouping"></a>Multi-resolution Grouping</h4><p>分两部分，一部分直接用Pointnet从raw points上提取特征，另一部分是对subregion使用set abstraction得到的特征的集合。第一部分想当于是一个比较全局的部分，第二部分相当于是一个比较局部的部分，这里用两部分可以很好的控制全局区域密度。当局部区域密度比较小时，说明全局特征没有全局特征可靠，因此可以增加全局特征的权重。反之也是如此。这就相当于权重可以在密度的变化之中可以被学习到。</p>
+<h3 id="Segmentation"><a href="#Segmentation" class="headerlink" title="Segmentation"></a>Segmentation</h3><p>在网络中输入不断被降采样而在segmentation中label都是针对原始点的，相当于需要做一个upsampling的动作。作者使用插值的方法再和之前的set abstraction中的feature做一个concatenate。</p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Pointnet/" rel="tag"># Pointnet</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/14/pip清华镜像/" rel="next" title="linux命令">
+                <i class="fa fa-chevron-left"></i> linux命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -349,6 +476,13 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="gitalk-container"></div>
+    
+  </div>
+    
+
 
         </div>
         
@@ -369,8 +503,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Jelen Ding">
           <p class="site-author-name" itemprop="name">Jelen Ding</p>
@@ -445,6 +588,22 @@
       <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=474739593&auto=1&height=66"></iframe>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现细节"><span class="nav-number">2.</span> <span class="nav-text">实现细节</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#层级点云特征学习"><span class="nav-number">2.1.</span> <span class="nav-text">层级点云特征学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Sampling-layer"><span class="nav-number">2.1.1.</span> <span class="nav-text">Sampling layer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Grouping-layer"><span class="nav-number">2.1.2.</span> <span class="nav-text">Grouping layer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pointnet-layer"><span class="nav-number">2.1.3.</span> <span class="nav-text">Pointnet layer</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点云密度不均匀时的鲁棒特征学习"><span class="nav-number">2.2.</span> <span class="nav-text">点云密度不均匀时的鲁棒特征学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-scale-Grouping"><span class="nav-number">2.2.1.</span> <span class="nav-text">Multi-scale Grouping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-resolution-Grouping"><span class="nav-number">2.2.2.</span> <span class="nav-text">Multi-resolution Grouping</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Segmentation"><span class="nav-number">2.3.</span> <span class="nav-text">Segmentation</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -558,10 +717,10 @@
   
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 
@@ -596,6 +755,21 @@
 
 
 
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '01f169736aa96e503120',
+          clientSecret: '155882f75f8c57c606c4f28067b154cde0dbfbc9',
+          repo: 'dingzhelun.github.io',
+          owner: 'DingZhelun',
+          admin: ['DingZhelun'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
 
 
   
@@ -928,26 +1102,6 @@
   
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 
