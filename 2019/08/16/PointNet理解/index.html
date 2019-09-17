@@ -94,13 +94,13 @@
 
 
 
-<meta name="description" content="一、三维深度学习简介 多视角（multi-view）：通过多视角二维图片组合三维物体，此方法将传统CNN应用于多张二维视角的图片，特征被view pooling procedure聚合起来形成三维物体 体素（volumetric）：通过将物体表现为空间中的体素进行类似于二维的三维卷积（例如，卷积核大小为5*5*5），是规律化的并且易于类比二维的，但同时因为多了一个维度出来，时间和空间复杂度都非常">
+<meta name="description" content="初学pointnet，一些重点笔记">
 <meta name="keywords" content="PointNet">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PointNet理解">
 <meta property="og:url" content="http://jelen-d.com/2019/08/16/PointNet理解/index.html">
 <meta property="og:site_name" content="Jelen&#39;s blog">
-<meta property="og:description" content="一、三维深度学习简介 多视角（multi-view）：通过多视角二维图片组合三维物体，此方法将传统CNN应用于多张二维视角的图片，特征被view pooling procedure聚合起来形成三维物体 体素（volumetric）：通过将物体表现为空间中的体素进行类似于二维的三维卷积（例如，卷积核大小为5*5*5），是规律化的并且易于类比二维的，但同时因为多了一个维度出来，时间和空间复杂度都非常">
+<meta property="og:description" content="初学pointnet，一些重点笔记">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/三维深度学习简介.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/无序性左.png">
@@ -112,10 +112,10 @@
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/代码2.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/代码3.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/代码4.png">
-<meta property="og:updated_time" content="2019-09-17T04:54:12.374Z">
+<meta property="og:updated_time" content="2019-09-17T05:01:35.485Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PointNet理解">
-<meta name="twitter:description" content="一、三维深度学习简介 多视角（multi-view）：通过多视角二维图片组合三维物体，此方法将传统CNN应用于多张二维视角的图片，特征被view pooling procedure聚合起来形成三维物体 体素（volumetric）：通过将物体表现为空间中的体素进行类似于二维的三维卷积（例如，卷积核大小为5*5*5），是规律化的并且易于类比二维的，但同时因为多了一个维度出来，时间和空间复杂度都非常">
+<meta name="twitter:description" content="初学pointnet，一些重点笔记">
 <meta name="twitter:image" content="http://jelen-d.com/2019/08/16/PointNet理解/三维深度学习简介.png">
 
 
@@ -393,7 +393,7 @@
       
 
       
-        <a id="more"></a>
+        <p>初学pointnet，一些重点笔记<br><a id="more"></a></p>
 <h2 id="一、三维深度学习简介"><a href="#一、三维深度学习简介" class="headerlink" title="一、三维深度学习简介"></a>一、三维深度学习简介</h2><ol>
 <li>多视角（multi-view）：通过多视角二维图片组合三维物体，此方法将传统CNN应用于多张二维视角的图片，特征被view pooling procedure聚合起来形成三维物体</li>
 <li>体素（volumetric）：通过将物体表现为空间中的体素进行类似于二维的三维卷积（例如，卷积核大小为5*5*5），是规律化的并且易于类比二维的，但同时因为多了一个维度出来，时间和空间复杂度都非常高，目前已经不是主流的方法了</li>
