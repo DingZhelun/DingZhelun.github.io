@@ -106,13 +106,13 @@
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/无序性左.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/无序性右.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/pointnet网络结构.png">
-<meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/无序性.png">
+<meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/旋转性.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/网络结构.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/代码1.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/代码2.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/代码3.png">
 <meta property="og:image" content="http://jelen-d.com/2019/08/16/PointNet理解/代码4.png">
-<meta property="og:updated_time" content="2019-09-17T05:01:35.485Z">
+<meta property="og:updated_time" content="2019-09-22T02:35:11.956Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PointNet理解">
 <meta name="twitter:description" content="初学pointnet，一些重点笔记">
@@ -406,7 +406,7 @@
 <p>下图中x代表点云中的某个点，h代表特征提取层，g叫做对称方法，r代表更高维特征提取，最后接一个sofmax分类。g可以是maxpooling或sumpooling，也就是说，最后的D维特征对每一维都选取<font color="red">N个点中对应的最大特征值或特征值总和</font>，这样就可以通过g来解决无序性问题。pointnet采用了max-pooling策略</p>
 <p><img src="pointnet网络结构.png" alt></p>
 <p>2.旋转性：相同的点云在空间中经过了一定的刚性变化（旋转或平移），坐标发生变化，如下图所示：</p>
-<p>我们希望不论点云在怎样的坐标系下呈现，网络都能正确的识别出。这个问题可以通过STN(<a href="https://blog.csdn.net/qq_39422642/article/details/78870629" target="_blank" rel="noopener">spacial transform networks</a>)来解决。二维的变换方法可以参考<a href="https://blog.csdn.net/u011961856/article/details/77920970" target="_blank" rel="noopener">这里</a>，三维不太一样的是点云是个不规则的结构（无序，无网格），不需要重采样过程。pointnet通过学习一个矩阵来达到对目标最有效的变换。<br><img src="无序性.png" alt></p>
+<p>我们希望不论点云在怎样的坐标系下呈现，网络都能正确的识别出。这个问题可以通过STN(<a href="https://blog.csdn.net/qq_39422642/article/details/78870629" target="_blank" rel="noopener">spacial transform networks</a>)来解决。二维的变换方法可以参考<a href="https://blog.csdn.net/u011961856/article/details/77920970" target="_blank" rel="noopener">这里</a>，三维不太一样的是点云是个不规则的结构（无序，无网格），不需要重采样过程。pointnet通过学习一个矩阵来达到对目标最有效的变换。<br><img src="旋转性.png" alt></p>
 <h2 id="三、pointnet网络结构详解"><a href="#三、pointnet网络结构详解" class="headerlink" title="三、pointnet网络结构详解"></a>三、pointnet网络结构详解</h2><p>先来看看网络的两个亮点：</p>
 <ol>
 <li>空间变换网络（STN）解决旋转问题：三维的STN可以通过学习点云本身的位姿信息学习到一个最有利于网络进行分类或分割的D*D旋转矩阵（D代表特征维度，pointnet中D采用3和64）。至于其中的原理，我的理解是，通过控制最后的loss来对变换矩阵进行调整，pointnet并不关心最后真正做了什么变换，只要有利于最后的结果都可以。pointnet采用了两次STN，第一次input transform是对空间中的点云进行调整，直观上理解是旋转出一个更有利于分类或分割的<font color="red">角度</font>，比如，把物体转到正面；第二次feature transform是对提取出的64维特征进行对齐，即在<font color="red">特征层面</font>对点云进行变换</li>
