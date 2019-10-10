@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[过拟合]]></title>
     <url>%2F2019%2F10%2F10%2F%E8%BF%87%E6%8B%9F%E5%90%88%2F</url>
-    <content type="text"><![CDATA[过拟合问题为了避免过拟合问题，非常常用的方法是：正则化 正则化的思想就是在损失函数中加入刻画模型复杂程度的指标。假如用于刻画模型在训练数据上表现的损失函数为J(θ),那么在优化时不是直接优化J(θ)，而是优化J(θ)+λR(w)。其中R(w)刻画的是模型的复杂程度，而λ表示模型复杂损失在总损失中的比例。θ表示的是一个神经网络中的所有的参数，它包括边上的权重w和偏置项b。一般来说模型的复杂程度只由权重w决定。常用的刻画模型复杂程度的函数R(w)有两种 一种是L1正则化，计算公式是： R(w)=||{w_i}||=\sum\limits_i公式呢？]]></content>
+    <content type="text"><![CDATA[过拟合问题为了避免过拟合问题，非常常用的方法是：正则化 正则化的思想就是在损失函数中加入刻画模型复杂程度的指标。假如用于刻画模型在训练数据上表现的损失函数为J(θ),那么在优化时不是直接优化J(θ)，而是优化J(θ)+λR(w)。其中R(w)刻画的是模型的复杂程度，而λ表示模型复杂损失在总损失中的比例。θ表示的是一个神经网络中的所有的参数，它包括边上的权重w和偏置项b。一般来说模型的复杂程度只由权重w决定。常用的刻画模型复杂程度的函数R(w)有两种 一种是L1正则化，计算公式是： R(w)=||{w_i}||=\sum\limits_i R(w)=&#x007C;&#x007C; w i &#x007C;&#x007C; MathType@MTEF@5@5@+=faaagCart1ev2aaaKnaaaaWenf2ys9wBH5garuavP1wzZbItLDhis9wBH5garmWu51MyVXgaruWqVvNCPvMCaebbnrfifHhDYfgasaacH8srps0lbbf9q8WrFfeuY=ribbf9v8qqaqFr0xc9pk0xbba9q8WqFfea0=yr0RYxir=Jbba9q8aq0=yq=He9q8qqQ8frFve9Fve9Ff0dc9Gqpi0dmeaabaqaciGacaGaaeqabaWaaeaaeaaakeaacaWGsbGaaiikaiaadEhacaGGPaGaeyypa0JaaiiFaiaacYhacaWG3bWaaSbaaSqaaiaadMgaaeqaaOGaaiiFaiaacYhaaaa@3BD2@ 公式呢？]]></content>
   </entry>
   <entry>
     <title><![CDATA[点云数据集]]></title>
