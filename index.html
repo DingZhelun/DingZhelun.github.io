@@ -312,6 +312,268 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jelen-d.com/2019/10/12/Frustum-PointNets/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jelen Ding">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jelen's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/12/Frustum-PointNets/" itemprop="url">Frustum PointNets</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-12T16:41:25+08:00">
+                2019-10-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Frustum-PointNets-for-3D-Object-Detection-from-RGB-D-Data"><a href="#Frustum-PointNets-for-3D-Object-Detection-from-RGB-D-Data" class="headerlink" title="Frustum PointNets for 3D Object Detection from RGB-D Data"></a>Frustum PointNets for 3D Object Detection from RGB-D Data</h1><h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>在这项工作中，我们研究了室内和室外场景中基于RGB-D数据的3D对象检测。 尽管以前的方法主要关注图像或3D体素，这些图像通常会掩盖自然的3D模式和3D数据的不变性，但我们通过弹出RGB-D扫描直接对原始点云进行操作。但是，这种方法的主要挑战是如何有效地在大型场景的点云中定位对象（<em>region proposal</em>）。我们的方法不单单依靠3D提议，而是利用成熟的2D对象检测器和高级3D深度学习来进行对象定位，从而即使是很小的对象也可以实现高效率和高召回率。<strong>得益于原始点云数据上直接学习，我们的方法在强遮挡和点非常稀疏的情况下，也能准确的估计3D物体边界。</strong>在KITTI和SUN RGB-D 3D检测基准上进行了评估，我们的方法在具有实时能力的同时，以明显的优势超越了现有技术。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>近来，在2D图像理解任务（例如对象检测[13]和实例分割[14]）上已经取得了很大的进步。然而，除了获取2D边界或像素蒙版外，在像自动驾驶和增强现实等一些应用中，急需3D理解。随着部署在移动设备和自动汽车上的3D感知器的普及，越来越多的3D数据被捕获和处理。在这项工作中，我们研究了最重要的3D感知任务之一——3D对象检测，该任务根据3D传感器数据，对物体进行分类和估算物体对象的定向3D边界框。</p>
+<p>尽管3D传感器数据通常以点云的形式出现，但是如何表示点云数据和对3D物体检测使用什么样的深度网络结构仍然是一个开放的问题。大多数现有的作品通过投影[36,26]将3D点云转换为图像，或通过量化[40.23.26]转换为体积网络，然后应用于体积网络。</p>
+<p><img src="/Users/dingzhelun/blog/source/_posts/Frustum-PointNets/image-20191013172950097.png" alt="图1"></p>
+<p>图1.3D物体检测管道。给出RGB-D数据，我们首先在RGB中使用CNN产生2D区域建议。然后将每一个2D区域挤出到3D<em>视锥</em>中，在该视锥中，我们从深度数据中获得点云。最终，我们的frustum PointNet根据视锥中的点预测了（定向和无模态）对象的3D边界框。</p>
+<p>然而，这种数据表示形式的转换可能使自然3D模型和数据的不变性模糊不清。最近，许多论文提出了直接处理点云而不转换数据到其他的格式。例如，[25,27]提出了一种新型的深度网络架构，叫Pointnets，这种模型在3D理解任务（例如对象分类和语义分割）表现出卓越的性能和效率。</p>
+<p>虽然Pointnets能够对整个点云进行分类，或为点云中的每个点预测语义类别，但是尚不清楚如何将该架构用于实例级3D物体检测。为了实现这个目标，我们必须解决一个关键问题：如何有效的提出在3D空间中3D物体的有效位置。模仿图像检测的实践，可以通过滑动窗口[8]或通过像[33]的3D区域建议网络枚举候选3D框。然而， 但是，3D搜索的计算复杂度通常相对于分辨率呈三次方增长，并且对于大型场景或实时应用（例如自动驾驶）而言过于昂贵。</p>
+<p>相反，在这项工作中，我们遵循降维原理减少了搜索空间：我们采用了成熟的2D对象检测器（图1）。首先，通过从图像检测器中拉伸2D边界框来提取对象的3D边界视锥。然后，在每个3D视锥所修剪的3D空间中，我们使用Point-Net的两种变体连续执行3D对象实例分割和无模3D边界框回归。分割网络可预测感兴趣对象的3D遮罩（即实例分割）； 然后回归网络估算无模3D边界框（即使只有一部分可见，也可以覆盖整个对象）。</p>
+<p>与之前的将RGB-D数据视为2D映射的CNNs相比，当我们将深度图提升到3D点云并用3D工具处理它们时，我们的方法更加以3D为中心。这种以3D为中心的视图可以更加有效的探索3D数据。首先，在我们的pipeline中，对3D坐标成功地应用了一些变换，这些变换把点云校准到一序列更受约束的规范框架中。这些对齐方式排出了数据中姿势的差异，并因此使3D几何图形更加明显，从而使3D学习者的工作更加轻松。其次，在3D空间中学习能够更好的挖掘3D空间中的几何和拓扑结构。原则上，所有的物体都存在于3D空间中；因此，我们相信，直接在3D空间中运行学习者可以更自然的对一些几何结构（例如，重叠、平面和对称）进行参数话和捕获。最近的实验证据已经证明了这种以3D为中心的网络设计理念的实用性。</p>
+<p>我们的方法在KITTI 3D对象检测[1]和鸟瞰视图[2]基准测试中均处于领先地位。与以前的现有技术相比[6]，我们的方法比3D车载AP上具有更高的效率（以5 fps的速度运行），要好8.04％。 我们的方法也非常适合室内RGB-D数据，在此条件下，我们的3D mAP比SUN-RGBD上的[16]和[30]分别提高了8.9％和6.4％，而运行速度却快了1至3个数量级。</p>
+<p>​    我们的工作的主要贡献如下：</p>
+<pre><code>* 我们为基于RGB-D数据的3D对象检测提出了一种新颖的框架，称为Frustum PointNets。
+* 我们展示了如何在我们的框架下训练3D对象检测器，并在标准3D对象检测基准上达到最先进的性能。
+* 我们提供广泛的定量评估，以验证我们的设计选择以及丰富的定性结果，以了解我们方法的优势和局限性
+</code></pre><h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><p><strong>3D Object Detection from RGB-D Data（从RGB-D数据进行3D对象检测）</strong> 研究人员通过采用各种方式表示RGB-D数据来解决3D检测问题。</p>
+<p>​        <em>Front view image based methods</em>（基于正视图图像的方法）：[4,24,41]拍摄单眼RGB图像并塑造先验或遮挡模式以推断3D边界框。[18，7]将深度数据表示为2D映射，并应用CNN来定位2D图像中的对象。相比之下，我们将深度表示为点云，并使用可以更有效地探索3D几何形状的高级3D深度网络（PointNets）。</p>
+<p>​        <em>Bird’s eye view based methods</em>（基于鸟瞰的方法）：MV3D [6] 将LiDAR点云投影到鸟瞰图上，并为3D边界框训练一个区域提议。然而，这种方法在检测小型物体（例如，行人和骑自行车的人）方面滞后，并且不能轻易的适应垂直方向上具有多个物体的场景。</p>
+<p>​        <em>3D based methods</em>（基于3D的方法）：[38,34]利用SVM从点云中提取的手工设计的几何特征上训练3D对象分类器，然后使用滑动窗口搜索对对象进行定位。[8]通过在体素化3D网格上用3D CNN替换SVM扩展了[38]。[30]为点云中的3D对象检测设计了新的几何特征。[35，17]将整个场景的点云转换为体积网格，并使用3D体积CNN进行对象建议和分类。由于3D卷积的昂贵成本和较大的3D搜索空间，这些方法的计算成本通常很高。最近，[16]提出了一种2D驱动的3D对象检测方法，该方法与我们的想法类似。但是，他们使用手工制作的特征（基于点坐标的直方图）和简单的完全连接的网络来回归3D框的位置和姿势，这在速度和性能上都不理想。相反，我们提出了使用深度3D特征学习（PointNets）的更灵活和有效的解决方案。</p>
+<p><strong>Deep Learning on Point Clouds（点云上的深度学习）</strong> 大多数现有的作品在特征学习之前将点云转换为图像或体积形式。[40，23，26]将点云体素化为体积网格，并将图像CNN泛化为3D CNN。 [19，31，39，8]设计了更有效的3D CNN或利用点云稀疏性的神经网络架构。但是，这些基于CNN的方法仍然需要对具有特定体素分辨率的点云进行量化。最近，一些著作[25，27]提出了一种新型的网络体系结构（PointNets），该体系结构直接消耗原始点云而无需将其转换为其他格式。虽然PointNet已应用于单个对象分类和语义分段，但我们的工作探索了如何扩展其结构，以实现3D对象检测。</p>
+<h2 id="问题定义"><a href="#问题定义" class="headerlink" title="问题定义"></a>问题定义</h2><p>给定RGB-D数据作为输入，我们的目标是对3D空间中的对象进行分类和定位。从LiDAR或室内深度传感器获得的深度数据表示为RGB相机坐标中的点云。投影矩阵也是已知的，因此我们可以从2D图像区域获得3D视锥。每个对象都由一个类别（k个预定义类别中的一个）和一个无模态3D边界框表示。即使部分对象被遮挡或截断，无模式框也会标记整个对象。通过3D框的大小$h,w,l$，中心${c_x},{c_y},{c_z}$和相对于每个类别的预定义规范姿势的方向$\theta ,\varphi ,\psi$来参数化。在我们的实现中，我们仅考虑围绕上轴的方位角$\theta$进行定向。</p>
+<p><img src="/Users/dingzhelun/blog/source/_posts/Frustum-PointNets/image-20191014005626202.png" alt="image-20191014005626202"></p>
+<p>图2.用于3D对象检测的Frustum PointNets。我们首先利用2D CNN对象检测器来提出2D区域并对其内容进行分类。然后将2D区域提升为3D，从而成为锥体提议。给定一个锥体中的点云（具有$n$个点的$n×c$和$XYZ$、每个点的强度等的$c$通道，），通过对每个点进行二分类来分割对象实例。基于分段的对象点云（$m×c$），轻量级回归PointNet（T-Net）尝试通过平移对齐点，以使它们的质心靠近模态框中心。最后，框估计网络估计对象的无模3D边界框。图4和图5给出了有关所涉及的坐标系以及网络输入，输出的更多图示。</p>
+<h2 id="3D-Detection-with-Frustum-PointNets"><a href="#3D-Detection-with-Frustum-PointNets" class="headerlink" title="3D Detection with Frustum PointNets"></a>3D Detection with Frustum PointNets</h2><p>如图2所示，我们的3D对象检测系统包括三个模块：视锥提案，3D实例分割和3D非模态边界框估计。我们将在以下小节中介绍每个模块。我们将专注于每个模块的管道和功能，并向读者推荐有关所涉及的深层网络的特定结构的补充。</p>
+<h3 id="Frustum-Proposal-视锥提案"><a href="#Frustum-Proposal-视锥提案" class="headerlink" title="Frustum Proposal 视锥提案"></a>Frustum Proposal 视锥提案</h3><p>大多数3D传感器（尤其是实时深度传感器）产生的数据分辨率仍低于商用相机的RGB图像。 因此，我们利用成熟的2D对象检测器在RGB图像中提出2D对象区域以及对对象进行分类。</p>
+<p>使用已知的相机投影矩阵，可以将2D边界框提升到一个视锥（视深度传感器范围指定了近平面和远平面），以定义对象的3D搜索空间。 然后，我们收集视锥中的所有点以形成视锥点云。如图4（a）所示，截头可能会朝向许多不同的方向，这会导致点云的位置发生很大的变化。如图4（a）所示，视锥可能会朝向许多不同的方向，这会导致点云的位置发生很大的变化。因此，我们通过将视锥朝向中心视图旋转以使视锥的中心轴正交于像平面，从而对视锥进行标准化。这种归一化有助于改善算法的旋转不变性。我们称此为从RGB-D数据视锥提案生成中提取视锥点云的整个过程。</p>
+<p>尽管我们的3D检测框架无法确定2D区域提议的确切方法，但我们采用基于FPN [20]的模型。尽管我们的3D检测框架无法确定2D区域提议的确切方法，但我们采用基于FPN [20]的模型。我们在ImageNet分类和COCO对象检测数据集上预先训练模型权重，然后在KITTI 2D对象检测数据集上对其进行进一步微调，以分类和预测无模式2D框。补充中提供了2D检测器训练的更多详细信息。</p>
+<p><img src="/Users/dingzhelun/blog/source/_posts/Frustum-PointNets/image-20191014141853523.png" alt="图3"></p>
+<p>图3.在视锥点云中进行3D检测的挑战。左：带有人像区域建议的RGB图像。右：从2D盒中挤出的视锥中的LiDAR点的鸟瞰图，在这里，前景遮挡物（自行车）和背景杂波（建筑物）的点分布广泛。</p>
+<p><img src="/Users/dingzhelun/blog/source/_posts/Frustum-PointNets/image-20191014142120198.png" alt="图4"></p>
+<p>图4.点云的坐标系统。显示了人工点（黑点）以说明（a）默认摄像机坐标；（b）将视锥旋转到中心视图后的视锥坐标（第4.1节）；（c）以原点的质心为中心的蒙版坐标（第4.2节）； （d）T-Net预测的对象坐标（第4.3节）。</p>
+<p><img src="/Users/dingzhelun/blog/source/_posts/Frustum-PointNets/image-20191014142609480.png" alt="图5">图5. PointNet的基本结构和IO。说明了PointNet ++ [27]（v2）模型的结构，该模型具有集合抽象层和特征传播层（用于分段）。所涉及的协调系统如图4所示。</p>
+<h3 id="3D-Instance-Segmentation-3D实例分割"><a href="#3D-Instance-Segmentation-3D实例分割" class="headerlink" title="3D Instance Segmentation 3D实例分割"></a>3D Instance Segmentation 3D实例分割</h3><p>给定2D图像区域（及其对应的3D轮廓），可以使用几种方法来获取对象的3D位置：一种简单的解决方案是直接回归3D对象的位置（例如，通过3D边界框） 使用2D CNN的深度图。但是，此问题并不容易，因为在自然场景中（通常如图3所示）遮挡对象和背景杂乱的现象很常见，这可能会严重分散3D定位任务的注意力。因为对象在物理空间中是自然分离的，远处的物体在图像中可能会紧挨着，所以3D点云中的分割要比图像中的分割更加自然和容易。观察到这一事实后，我们建议在3D点云中分割实例，而不是在2D图像或深度图中。类似于Mask-RCNN [14]，通过对图像区域中的像素进行二分类来实现实例分割，我们在视锥上的点云上使用基于PointNet的网络实现了3D实例分割。</p>
+<p><strong>3D Instance Segmentation PointNet（3D实例分割PointNet）</strong> 网络在视锥中获取点云，并预测每个点的概率得分，该概率得分指示该点属于感兴趣对象的可能性。注意，每个锥体只包含一个感兴趣的对象。在这里，这些“其他”点可以是无关区域（例如地面，植被）的点，也可以是遮挡或位于感兴趣对象后面的其他实例。与2D实例分割中的情况类似，视视锥的位置而定，一个视锥中的对象点可能会变得混乱或闭塞另一视锥中的点。因此，我们的分割PointNet正在学习遮挡并聚合模式，以及识别特定类别对象的几何形状。</p>
+<p>在多类别检测的情况下，我们还利用2D检测器的语义进行更好的实例分割。例如，如果我们知道感兴趣的对象是行人，则分割网络可以使用它来查找看起来像人的几何形状。具体而言，在我们的结构中，我们将语义类别编码为one-hot向量（对于预定义的k个类别为k维），并将one-hot向量连接到中间点云特征。补充中描述了特定结构的更多详细信息。</p>
+<p>在3D实例分割之后，被分类为感兴趣对象的点被提取出来（图2中的“masking”）。获得这些分割后的对象点后，我们将其坐标进一步归一化，以提高算法的平移不变性， 基本原理与视锥提案的步骤相同。在我们的实现中，我们通过将质点的XYZ值减去，将点云转换为局部坐标。这在图4（c）中示出。请注意，我们有意不对点云进行缩放，因为局部点云的边界范围的大小会受到视点的极大影响，并且点云的实际大小有助于估计框的大小。</p>
+<p>在我们的实验中，我们发现坐标转换（例如上面的坐标转换和以前的视锥旋转）对于3D检测结果至关重要，如表8所示。</p>
+<h3 id="Amodal-3D-Box-Estimation-非模态的3D框估计"><a href="#Amodal-3D-Box-Estimation-非模态的3D框估计" class="headerlink" title="Amodal 3D Box Estimation 非模态的3D框估计"></a>Amodal 3D Box Estimation 非模态的3D框估计</h3><p>给出分段的对象点（在3D蒙版坐标中），此模块通过使用框回归PointNet和预处理转换（T-Net？）网络来估计对象的面向无模态3D边界框。</p>
+<p><strong>Learning-based 3D Alignment by T-Net 通过T-Net进行基于学习的3D对齐</strong> 即使我们已经根据对象的质心位置对齐了分割的对象点，我们仍然发现蒙版坐标框的原点（图4（c））可能仍然距离无模态盒中心很远。 轻量级回归PointNet（T-Net）估计完整对象的真实中心，然后转换坐标，使预测的中心成为原点（图4（d））。因此，我们建议使用轻量级回归PointNet（T-Net）估计完整对象的真实中心，然后变换坐标，使预测的中心成为原点（图4（d））。 </p>
+<p>我们的T-Net的结构和训练类似于[25]中的T-Net，可以将其视为一种特殊类型的空间转换网络（STN）[15]。但是，与没有直接监督变换的原始STN不同，我们明确监督转换网络，以预测从蒙版坐标原点到真实对象中心的中心残差。</p>
+<p><strong>Amodal 3D Box Estimation PointNet 非模态3D框估算PointNet</strong> 框估计网络（对于整个对象，即使部分看不见）在给定3D对象坐标中的对象点云的情况下，为对象预测非模态包围框（图4（d））。网络架构类似于对象分类[25，27]，但是输出不再是对象类别分数，而是3D边界框的参数。</p>
+<p>如第二节所述。如图3所示，我们通过其中心 $({c_x},{c_y},{c_z})$，大小$(h，w，l)$和航向角$\theta $（沿上轴）对3D边界框进行参数化。我们采用“残差”的方法进行边框中心估计。框估计网络预测的中心残差与来自T-Net和掩盖点的质心的先前中心残差相结合，以恢复绝对中心（等式1）。对于边框的大小和航向角，我们遵循先前的工作[29，24]，并使用分类和回归公式的混合体。具体来说，我们预定义了$N S$大小的模板和$N H$个等分角箱。我们的模型将尺寸/标题（尺寸的$NS$分数，标题的$NH$分数）分类为那些预定义的类别，并预测每种类别的剩余数（$3×NS$剩余尺寸的高度，宽度，长度，$NH$航向的剩余角度）。最后，净输出总共$3 + 4×NS + 2×NH$个数。</p>
+
+
+$${C_{pred}} = {C_{mask}} + {\rm{ }}\Delta {C_{t - net}} + {\rm{ }}\Delta {C_{box - net}}$$
+
+
+<h3 id="Training-with-Multi-task-Losses"><a href="#Training-with-Multi-task-Losses" class="headerlink" title="Training with Multi-task Losses"></a>Training with Multi-task Losses</h3><p>我们同时优化了涉及多任务损失的三个网络（3D实例分割PointNet，T-Net和无模态框估计PointNet）（如公式2所示）。$L_{c1-reg}$用于T-Net，$L_{c2-reg}$用于框估计网络的中心回归。 $L_{h-cls}$和$L_{h-reg}$是航向角预测的损失，而$L_{s-cls}$和$L_{s-reg}$是框尺寸的损失。 Softmax用于所有分类任务，smooth-$l_1$（huber）损失用于所有回归情况。</p>
+
+
+$$L_{multi-task}=L_{seg}+\lambda(L_{c1-reg}+L_{c2-reg}+L_{h-cls}+L_{h-reg}+L_{s-cls}+L_{s-reg}+\gamma L_{corner}$$       (2)
+
+
+<p><strong>Corner Loss for Joint Optimization of Box Parameters 联合优化箱形参数的角损失</strong> 尽管我们的3D边界框参数化的紧凑并且完整，但学习并未针对最终3D框的精度进行优化——中心，尺寸和朝向具有单独的损耗项。想象一下这样的情况：可以准确地预测中心和尺寸，但是航向角是不对的——带有基本事实框的3D IoU将由角度误差决定。理想情况下，应该对所有三个项（中心，大小，航向）进行联合优化，以实现最佳3D框估计（在IoU度量标准下）。为了解决这个问题，我们提出了一种新颖的正则化损失，即角损失：</p>
+
+
+$${L_{corner}} = \sum\limits_{i = 1}^{NS} {\sum\limits_{j = 1}^{NH} {{\delta _{ij}}\min \{ \sum\limits_{k = 1}^8 {||P_k^{ij} - P_k^*||,\sum\limits_{i = 1}^8 {||P_k^{ij} - P_k^{**}||} } \} } } $$  （3）
+
+
+<p>本质上，角损失是预测框和基本事实框的八个角之间的距离之和。由于拐角位置是由中心，大小和航向共同确定的，因此角损失能够规范针对这些参数的多任务训练。</p>
+<p>为了计算角损失，我们首先从尺寸的模板和航向角箱构造$N S×N H$“锚“边框。然后将锚边框转换为估计箱中心。我们将锚边框角表示为$P_k^{ij}$，其中$i,j,k$分别为尺寸类别，朝向类别和（预先定义的）角顺序的索引。为了避免翻转朝向估计带来的较大的损失，我们进一步计算了从翻转基本事实框到角的距离（$P_k^{**}$），并使用原始案例和翻转后案例的最小值。$\delta_{ij}$，是基本真实大小/朝向类别的一个，其他为零，是一个二维掩码，用于选择我们关心的距离项。</p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>实验被分为三部分。第一部分，我们比较了在KITTI [10]和SUN-RGBD [33]上进行3D对象检测的最新方法（第5.1节）。第二部分，我们提供深入的分析以验证我们的设计选择（第5.2节）。最后，我们展示出定性结果并讨论了我们方法的优势和局限性（第5.3节）。</p>
+<h3 id="Comparing-with-state-of-the-art-Methods-与最先进的方法进行比较"><a href="#Comparing-with-state-of-the-art-Methods-与最先进的方法进行比较" class="headerlink" title="Comparing with state-of-the-art Methods 与最先进的方法进行比较"></a>Comparing with state-of-the-art Methods 与最先进的方法进行比较</h3><p>我们根据3D对象检测的KITTI [11]和SUN-RGBD [33]基准评估我们的3D对象检测器。与最新方法相比，在这两项任务上我们都取得了明显更好的结果。</p>
+<p><strong>KITTI</strong>  表1显示了我们的3D检测器在KITTI测试集上的性能。我们在很大程度上优于以前的最新方法。MV3D [6]使用多视图特征聚合和复杂的多传感器融合策略时，我们基于PointNet [25]（v1）和PointNet ++ [27]（v2）主干的方法在设计上更为简洁。 尽管超出了这项工作的范围，但我们希望传感器融合（尤其是3D检测的图像特征聚合）可以进一步改善我们的结果。</p>
+<p>我们还在表2中显示了该方法在3D对象定位（鸟瞰）上的性能。在3D定位任务中，将边界框投影到鸟瞰平面，并在定向的2D框中评估IoU。同样，我们的方法大大优于以前的工作，包括DoBEM [42]和MV3D [6]在投射的LiDAR图像上使用CNN，以及在体素化的点云上使用3D CNN的3D FCN [17]。</p>
+<p><img src="/Users/dingzhelun/blog/source/_posts/Frustum-PointNets/image-20191015160714142.png" alt="表2"></p>
+<p>表1. KITTI测试集上的<strong>3D对象检测</strong>3D AP。DoBEM [42]和MV3D [6]（先前最先进的技术）基于具有鸟瞰LiDAR图像的2D CNN。在没有传感器融合或多视图聚合的情况下，我们的方法在所有类别和数据子集上的性能大大优于那些方法。3D边界框IoU阈值对于汽车是70％，对于行人和骑自行车的人是50％。</p>
+<p><img src="/Users/dingzhelun/blog/source/_posts/Frustum-PointNets/image-20191015161149455.png" alt="表2"></p>
+<p>表2. KITTI测试集上的<strong>3D对象定位</strong>AP（鸟瞰图）。 3D FCN [17]在体素化点云上使用3D CNN，远非实时。MV3D [6]是先前最先进的技术。我们的方法在所有类别和数据子集上均明显优于那些方法。鸟瞰2D边界框IoU阈值对于汽车是70％，对于行人和骑自行车的人是50％。</p>
+<p><img src="/Users/dingzhelun/Library/Application Support/typora-user-images/image-20191015161422167.png" alt="表3"></p>
+<p>表3. KITTI val set上的3D对象检测AP（仅限汽车）。</p>
+<p><img src="/Users/dingzhelun/Library/Application Support/typora-user-images/image-20191015161509619.png" alt="表4"></p>
+<p>表4. KITTI val set上的3D对象定位AP（仅限汽车）。</p>
+<p><img src="/Users/dingzhelun/Library/Application Support/typora-user-images/image-20191015161619166.png" alt="表5"></p>
+<p>表5. 行人和骑自行车者的KITTI val设置的性能。评估的模型是Ours（v2）。</p>
+<p>图6中显示了我们网络的输出，即使在非常困难的情况下，我们也可以观察到准确的3D实例分割和框预测。我们将有关成功和失败案例模式的更多讨论推迟到了5.3节。我们还报告了表3和表4（用于汽车）中的KITTI val set（与[6]相同的划分）的性能，以支持与更多已发表的作品进行比较，并在表5（用于行人和骑自行车的人）中进行参考。</p>
+<p><strong>SUN-RGBD</strong> 之前的大多数3D检测工作要么专门用于室外LiDAR扫描，在这种情况下，对象在空间中间隔得很好，并且点云稀疏（因此对于鸟眼投影是可行的），或者在室内深度图上是具有密集像素值的常规图像， 图像CNN可以轻松应用。 但是，对于在垂直空间中经常同时存在多个物体的室内房间而言，为鸟瞰设计的方法可能无法使用。另一方面，室内聚焦方法很难从LiDAR扫描中应用于稀疏和大规模的点云。</p>
+<p>相反，我们基于视锥的PointNet是用于室外和室内3D对象检测的通用框架。通过应用与KITTI数据集相同的流水线，我们在SUN-RGBD基准测试（表6）上获得了最先进的性能，具有显著更高的mAP以及更快的（10x-1000x）推理速度 。</p>
+<h3 id="Architecture-Design-Analysis-结构设计分析"><a href="#Architecture-Design-Analysis-结构设计分析" class="headerlink" title="Architecture Design Analysis 结构设计分析"></a>Architecture Design Analysis 结构设计分析</h3><p>在本节中，我们提供分析和消融实验以验证我们的设计选择。</p>
+<p><strong>Experiment setup 实验设置</strong></p>
+<p>除非另有说明，否则本节中的所有实验均基于我们的v1模型，该模型基于KITTI数据，使用[6]中的train/val划分。为了消除2D检测器的影响，我们将基本事实2D框用于区域建议，并使用3D框估计精度（IoU阈值0.7）作为评估指标。我们只关注训练最多的汽车类别。</p>
+<p><img src="/Users/dingzhelun/blog/source/_posts/Frustum-PointNets/image-20191015171651981.png" alt="图6"></p>
+<p>图6.在KITTI val集上的Frustum PointNet结果的可视化（最佳放大显示颜色）。这些结果基于PointNet ++模型[27]，其以5 fps的速度运行，并且对汽车，行人和骑自行车的人实现的测试集3D AP分别为70.39、44.89和56.77。点云上的3D实例蒙版以彩色显示。 真阳性检测框为绿色，假阳性框为红色，基本事实框为蓝色，分别表示假阳性和假阴性情况。每个框旁边的数字和字母表示实例ID和语义类别，其中“ v”代表汽车，“ p”代表行人，“ c”代表骑车人。参见5.3节有关结果的更多讨论。</p>
+<p><img src="/Users/dingzhelun/blog/source/_posts/Frustum-PointNets/image-20191016145339056.png" alt="表6"></p>
+<p>表6. SUN-RGBD val集合上的3D对象检测AP。评估指标是[33]提出的3D IoU阈值为0.25的平均精度。请注意，COG [30]和2D驱动的[16]都使用房间布局上下文来提高性能，而我们和DSS [35]则没有。与以前的最新技术相比，我们的方法在mAP方面提高了6.4％至11.9％，并且快了1-3个数量级。</p>
+<p><strong>Comparing with alternative approaches for 3D detection 与3D检测的替代方法进行比较</strong> 在这一部分中，我们评估了一些基于CNN的基线方法以及使用2D蒙版的管道的烧蚀版本和变体。在表7的第一行中，我们显示了来自两个基于CNN的网络的3D框估计结果。基线方法在RGB-D图像的基本事实框上训练了VGG [32]模型，并采用与我们的主要方法相同的框参数和损失函数。第一行中的模型直接从vanilla RGB-D图像补丁中估计框位置和参数，而另一行（第二行）使用从COCO数据集中训练的FCN进行2D蒙版估计（如Mask- RCNN [ 14]），并且仅将遮罩区域中的特征用于预测。还可以通过减去2D蒙版中的中间深度来转换深度值。但是，与我们的主要方法相比，两个CNN基线得出的结果都差得多。</p>
+<p>为了理解为什么CNN基线表现不佳，我们在图7中可视化了典型的2D蒙版预测。尽管估计的2D蒙版在RGB图像上以高质量显示，但2D蒙版中仍然有很多杂波和前景点。相比之下，我们的3D实例分割得到的结果要干净得多，这极大地简化了下一个模块的精细定位和边界框回归的过程。</p>
+<p>在表7的第三行中，我们尝试使用没有3D实例细分模块的视锥体PointNet的烧蚀版本。毫不奇怪，该模型的结果比我们的主要方法差很多，这表明了我们的3D实例分割模块的关键作用。在第四行中，我们使用2D遮罩深度图（图7）中的点云代替3D分割进行3D框估计。但是，由于2D蒙版无法清晰地分割3D对象，因此其性能比3D分割（我们在第五行的主要方法）要差12％以上。另一方面，将2D和3D蒙版组合使用（在2D蒙版深度图上对点云进行3D分割）也显示出比我们的主要方法稍差的结果，这可能是由于不准确的2D蒙版预测导致的累积误差。</p>
+<p><img src="/Users/dingzhelun/Library/Application Support/typora-user-images/image-20191016151630289.png" alt="表7"></p>
+<p>表7.<strong>比较2D和3D方法</strong>。2D遮罩来自RGB图像补丁上的FCN。3D遮罩来自于锥体点云上的PointNet。2D + 3D遮罩是PointNet在从2D遮罩深度图弹出的点云上生成的3D遮罩。</p>
+<p><img src="/Users/dingzhelun/blog/source/_posts/Frustum-PointNets/image-20191016152648112.png" alt="表8"></p>
+<p>表8.点云归一化的影响。指标是IoU = 0.7的3D框估计精度。</p>
+<p><img src="/Users/dingzhelun/blog/source/_posts/Frustum-PointNets/image-20191016152816408.png" alt="表9"></p>
+<p>表9. 3D框损失公式的影响。指标是IoU = 0.7的3D框估计精度。</p>
+<p><strong>Effects of point cloud normalization 点云归一化的影响</strong> 如图4所示，我们的锥体PointNet进行了一些关键的坐标转换以规范化点云，从而提高学习效率。表8显示了每个标准化步骤如何帮助3D检测。我们看到，视锥旋转（使视锥点具有更相似的XYZ分布）和蒙版质心减法（使对象点具有更小且规范的XYZ）都是至关重要的。此外，通过T-Net将目标点云与目标中心的额外对齐也大大提高了性能。</p>
+<p><strong>Effects of regression loss formulation and corner loss 回归损失公式和拐角损失的影响</strong> 在表9中，我们比较了不同的损失选项，并显示了“ cls-reg”损失（航向和尺寸回归的分类和残差回归方法）和正则化角损失的组合可获得最佳结果。</p>
+<p>仅使用回归损失的原始基线（第一行）无法获得令人满意的结果，因为回归目标的范围较大（对象大小从0.2m到5m）。相比之下，其cls-reg损失和归一化版本（通过标题箱大小或模板形状大小归一化的残差）可获得更好的性能。在最后一行，我们显示正则化角损失进一步有助于优化。</p>
+<h3 id="Qualitative-Results-and-Discussion-定性结果与讨论"><a href="#Qualitative-Results-and-Discussion-定性结果与讨论" class="headerlink" title="Qualitative Results and Discussion 定性结果与讨论"></a>Qualitative Results and Discussion 定性结果与讨论</h3><p>在图6中，我们可视化了锥体PointNet模型的代表性输出。我们看到，对于在合理距离内无遮挡的对象的简单情况（因此我们获得了足够的点数），我们的模型输出了非常准确的3D实例分割蒙版和3D边界框。其次，我们惊讶地发现我们的模型甚至可以从具有少量点的部分数据（例如平行停放的汽车）中正确预测出正确的无模式3D边框。 甚至人类也发现仅用点云数据注释此类结果非常困难。第三，在某些情况下，在具有大量靠近或甚至重叠2D边框的图像中看起来非常具有挑战性，当转换为3D空间时，定位变得容易得多（例如，第二行第三列中的P11）。</p>
+<p>另一方面，我们确实观察到了几种故障模式，这些模式指示了未来工作的可能方向。第一个常见错误是由于稀疏点云（有时少于5个点）中的姿势和尺寸估计不准确。 我们认为图像特征可以极大地帮助实现。因为即使对于遥远的物体，我们也可以使用高分辨率的图像补丁。第二种挑战是在锥体中有多个来自同一类别的实例（例如两个人站在旁边）。由于我们当前的pipeline在每个视锥中都假定有单个感兴趣的对象，因此当出现多个实例时，可能会感到困惑，从而输出混合的分割结果。如果我们能够在每个视锥中提出多个3D边界框，则可以缓解该问题。第三，有时我们的2D检测器会由于昏暗的灯光或强烈的遮挡而错过物体。由于我们的视锥提案基于区域提案，因此如果没有2D检测，就不会检测到3D对象。但是，我们的3D实例分割和非模态3D框估计PointNet不仅限于RGB视图建议。如补充资料所示，相同的框架也可以扩展到鸟瞰中提出的3D区域。</p>
+<p><strong>Acknowledgement 致谢</strong> 作者要感谢Nuro Inc.的支持，ONR MURI赠款N00014-13-1-0341，NSF赠款DMS-1546206和IIS-1528025（三星GRO奖）以及Adobe，Amazon和Apple的礼物。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1]  Kitti 3d object detection benchmark leader board.</p>
+<p><a href="http://www.cvlibs.net/datasets/kitti/" target="_blank" rel="noopener">http://www.cvlibs.net/datasets/kitti/</a> eval_object.php?obj_benchmark=3d. Accessed: 2017-11-14 12PM. 2</p>
+<p>[2]  Kitti bird’s eye view object detection benchmark leader</p>
+<p>board. <a href="http://www.cvlibs.net/datasets/" target="_blank" rel="noopener">http://www.cvlibs.net/datasets/</a> kitti/eval_object.php?obj_benchmark=bev. Accessed: 2017-11-14 12PM. 2</p>
+<p>[3]  M. Abadi, A. Agarwal, P. Barham, E. Brevdo, Z. Chen, C. Citro, G. S. Corrado, A. Davis, J. Dean, M. Devin, et al. Tensorflow: Large-scale machine learning on heterogeneous distributed systems. <em>arXiv preprint arXiv:1603.04467</em>, 2016.14</p>
+<p>[4]  X.Chen,K.Kundu,Z.Zhang,H.Ma,S.Fidler,andR.Urta- sun. Monocular 3d object detection for autonomous driving. In <em>Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition</em>, pages 2147–2156, 2016. 2, 6, 11</p>
+<p>[5]  X.Chen,K.Kundu,Y.Zhu,A.G.Berneshawi,H.Ma,S.Fi- dler, and R. Urtasun. 3d object proposals for accurate object class detection. In <em>Advances in Neural Information Process- ing Systems</em>, pages 424–432, 2015. 6</p>
+<p>[6]  X. Chen, H. Ma, J. Wan, B. Li, and T. Xia. Multi-view 3d object detection network for autonomous driving. In <em>IEEE CVPR</em>, 2017. 2, 5, 6, 11, 12, 13</p>
+<p>[7]  Z. Deng and L. J. Latecki. Amodal detection of 3d objects: Inferring 3d bounding boxes from 2d ones in rgb-depth im- ages. In <em>Conference on Computer Vision and Pattern Recog- nition (CVPR)</em>, volume 2, 2017. 2</p>
+<p>[8]  M.Engelcke,D.Rao,D.Z.Wang,C.H.Tong,andI.Posner. Vote3deep: Fast object detection in 3d point clouds using efficient convolutional neural networks. In <em>Robotics and Au- tomation (ICRA), 2017 IEEE International Conference on</em>, pages 1355–1361. IEEE, 2017. 1, 2</p>
+<p>[9]  C.-Y. Fu, W. Liu, A. Ranga, A. Tyagi, and A. C. Berg. Dssd: Deconvolutional single shot detector. <em>arXiv preprint arXiv:1701.06659</em>, 2017. 12</p>
+<p>[10]  A. Geiger, P. Lenz, C. Stiller, and R. Urtasun. Vision meets robotics: The kitti dataset. <em>The International Journal of Robotics Research</em>, 32(11):1231–1237, 2013. 5</p>
+<p>[11]  A. Geiger, P. Lenz, and R. Urtasun. Are we ready for au- tonomous driving? the kitti vision benchmark suite. In<em>Conference on Computer Vision and Pattern Recognition (CVPR)</em>, 2012. 5</p>
+<p>[12]  R. Girshick. Fast r-cnn. In <em>Proceedings of the IEEE inter- national conference on computer vision</em>, pages 1440–1448, 2015. 12</p>
+<p>[13]  R. Girshick, J. Donahue, T. Darrell, and J. Malik. Rich fea- ture hierarchies for accurate object detection and semantic segmentation. In <em>Computer Vision and Pattern Recognition (CVPR), 2014 IEEE Conference on</em>, pages 580–587. IEEE, 2014. 1</p>
+<p>[14]  K. He, G. Gkioxari, P. Dolla ́r, and R. Girshick. Mask r-cnn.<em>arXiv preprint arXiv:1703.06870</em>, 2017. 1, 3, 7</p>
+<p>[15]  M. Jaderberg, K. Simonyan, A. Zisserman, et al. Spatial transformer networks. In <em>NIPS 2015</em>. 4</p>
+<p>[16] J. Lahoud and B. Ghanem. 2d-driven 3d object detection in rgb-d images. In <em>Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition</em>, pages 4622– 4630, 2017. 2, 7</p>
+<p>[17] B. Li. 3d fully convolutional network for vehicle detection in point cloud. <em>arXiv preprint arXiv:1611.08069</em>, 2016. 2, 5,6</p>
+<p>[18] B. Li, T. Zhang, and T. Xia. Vehicle detection from 3d lidar using fully convolutional network. <em>arXiv preprint arXiv:1608.07916</em>, 2016. 2, 13</p>
+<p>[19] Y. Li, S. Pirk, H. Su, C. R. Qi, and L. J. Guibas. Fpnn: Field probing neural networks for 3d data. <em>arXiv preprint arXiv:1605.06240</em>, 2016. 2</p>
+<p>[20] T.-Y. Lin, P. Dolla ́r, R. Girshick, K. He, B. Hariharan, and S. Belongie. Feature pyramid networks for object detection.<em>arXiv preprint arXiv:1612.03144</em>, 2016. 3, 12</p>
+<p>[21] T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Dolla ́r. Focal loss for dense object detection. <em>arXiv preprint arXiv:1708.02002</em>, 2017. 12</p>
+<p>[22] W. Liu, D. Anguelov, D. Erhan, C. Szegedy, S. Reed, C.- Y. Fu, and A. C. Berg. Ssd: Single shot multibox detector. In <em>European conference on computer vision</em>, pages 21–37. Springer, 2016. 12</p>
+<p>[23] D. Maturana and S. Scherer. Voxnet: A 3d convolutional neural network for real-time object recognition. In <em>IEEE/RSJ International Conference on Intelligent Robots and Systems</em>, September 2015. 1, 2</p>
+<p>[24] A. Mousavian, D. Anguelov, J. Flynn, and J. Kosecka. 3d bounding box estimation using deep learning and geometry.<em>arXiv preprint arXiv:1612.00496</em>, 2016. 2, 5</p>
+<p>[25] C. R. Qi, H. Su, K. Mo, and L. J. Guibas. Pointnet: Deep learning on point sets for 3d classification and segmentation.<em>Proc. Computer Vision and Pattern Recognition (CVPR), IEEE</em>, 2017. 1, 2, 4, 5, 10, 11, 13</p>
+<p>[26] C. R. Qi, H. Su, M. Nießner, A. Dai, M. Yan, and L. Guibas. Volumetric and multi-view cnns for object classification on 3d data. In <em>Proc. Computer Vision and Pattern Recognition (CVPR), IEEE</em>, 2016. 1, 2</p>
+<p>[27] C. R. Qi, L. Yi, H. Su, and L. J. Guibas. Pointnet++: Deep hierarchical feature learning on point sets in a metric space.<em>arXiv preprint arXiv:1706.02413</em>, 2017. 1, 2, 4, 5, 7, 10, 11,13, 14</p>
+<p>[28] J. Ren, X. Chen, J. Liu, W. Sun, J. Pang, Q. Yan, Y.-W. Tai, and L. Xu. Accurate single stage detector using recurrent rolling convolution. In <em>CVPR</em>, 2017. 13</p>
+<p>[29] S. Ren, K. He, R. Girshick, and J. Sun. Faster r-cnn: Towards real-time object detection with region proposal networks. In<em>Advances in neural information processing systems</em>, pages 91–99, 2015. 2, 5, 12</p>
+<p>[30] Z. Ren and E. B. Sudderth. Three-dimensional object detec- tion and layout prediction using clouds of oriented gradients. In <em>Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition</em>, pages 1525–1533, 2016. 2, 7, 12</p>
+<p>[31] G. Riegler, A. O. Ulusoys, and A. Geiger. Octnet: Learning deep 3d representations at high resolutions. <em>arXiv preprint arXiv:1611.05009</em>, 2016. 2</p>
+<p>[32]  K. Simonyan and A. Zisserman. Very deep convolutional networks for large-scale image recognition. <em>arXiv preprint arXiv:1409.1556</em>, 2014. 7, 12, 13</p>
+<p>[33]  S. Song, S. P. Lichtenberg, and J. Xiao. Sun rgb-d: A rgb-d scene understanding benchmark suite. In <em>Proceedings of the IEEE Conference on Computer Vision and Pattern Recogni- tion</em>, pages 567–576, 2015. 1, 5, 7, 12</p>
+<p>[34]  S. Song and J. Xiao. Sliding shapes for 3d object detection in depth images. In <em>Computer Vision–ECCV 2014</em>, pages 634–651. Springer, 2014. 2</p>
+<p>[35]  S. Song and J. Xiao. Deep sliding shapes for amodal 3d ob- ject detection in rgb-d images. In <em>Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition</em>, pages 808–816, 2016. 2, 7</p>
+<p>[36]  H. Su, S. Maji, E. Kalogerakis, and E. G. Learned-Miller. Multi-view convolutional neural networks for 3d shape recognition. In <em>Proc. ICCV</em>, 2015. 1</p>
+<p>[37]  C. Sun, A. Shrivastava, S. Singh, and A. Gupta. Revisiting unreasonable effectiveness of data in deep learning era. <em>arXiv preprint arXiv:1707.02968</em>, 1, 2017. 14</p>
+<p>[38]  D. Z. Wang and I. Posner. Voting for voting in online point cloud object detection. <em>Proceedings of the Robotics: Science and Systems, Rome, Italy</em>, 1317, 2015. 2</p>
+<p>[39]  P.-S. Wang, Y. Liu, Y.-X. Guo, C.-Y. Sun, and X. Tong. O-cnn: Octree-based convolutional neural networks for 3d shape analysis. <em>ACM Transactions on Graphics (TOG)</em>, 36(4):72, 2017. 2</p>
+<p>[40]  Z. Wu, S. Song, A. Khosla, F. Yu, L. Zhang, X. Tang, and J. Xiao. 3d shapenets: A deep representation for volumetric shapes. In <em>Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition</em>, pages 1912–1920, 2015. 1,2</p>
+<p>[41]  Y. Xiang, W. Choi, Y. Lin, and S. Savarese. Data-driven 3d voxel patterns for object category recognition. In <em>Proceed- ings of the IEEE Conference on Computer Vision and Pattern Recognition</em>, pages 1903–1911, 2015. 2</p>
+<p>[42]  S.-L. Yu, T. Westfechtel, R. Hamada, K. Ohno, and S. Ta- dokoro. Vehicle detection and localization on birds eye view elevation images using convolutional neural network. <em>2017 IEEE International Symposium on Safety, Security and Res- cue Robotics (SSRR)</em>, 2017. 5, 6</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://jelen-d.com/2019/10/10/Tensorflow学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1091,7 +1353,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
